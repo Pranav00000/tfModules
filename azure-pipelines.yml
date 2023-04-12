@@ -6,17 +6,8 @@ pool:
 
 steps:
 
-- task: AzureCLI@2
+- task: CopyFiles@2
   inputs:
-    azureSubscription: 'Azure for Students(4086ee36-d2b5-4797-adef-ad1144340909)'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      # this will create Azure resource group
-      az group create --location westus --name $(terraformstoragerg)
-      
-      az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location westus --sku Standard_LRS
-      
-      az storage container create --name terraform --account-name $(terraformstorageaccount)
-      
-      az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
+    SourceFolder: '$(agent.builddirectory)'
+    Contents: '**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
