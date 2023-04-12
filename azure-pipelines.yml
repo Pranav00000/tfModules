@@ -5,21 +5,6 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: TerraformInstaller@0
-  inputs:
-    terraformVersion: '1.1.0'
-
-- script: |
-    terraform init
-  displayName: 'Terraform init'
-
-- script: |
-    terraform plan -out=tfplan
-  displayName: 'Terraform plan'
-
-- script: |
-    terraform apply tfplan
-  displayName: 'Terraform apply'
 
 - task: AzureCLI@2
   inputs:
