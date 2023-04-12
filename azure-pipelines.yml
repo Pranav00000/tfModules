@@ -20,3 +20,18 @@ steps:
 - script: |
     terraform apply tfplan
   displayName: 'Terraform apply'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'Azure for Students(4086ee36-d2b5-4797-adef-ad1144340909)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      # this will create Azure resource group
+      call az group create --location westus --name $(terraformstoragerg)
+      
+      call az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location westus --sku Standard_LRS
+      
+      call az storage container create --name terraform --account-name $(terraformstorageaccount)
+      
+      call az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
